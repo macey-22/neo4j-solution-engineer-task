@@ -1,0 +1,36 @@
+// Prevent duplicate Employees
+CREATE CONSTRAINT employee_name_unique IF NOT EXISTS
+FOR (e:Employee)
+REQUIRE e.employee_name IS UNIQUE;
+
+// Prevent duplicate Friends
+CREATE CONSTRAINT friend_name_unique IF NOT EXISTS
+FOR (f:Friend)
+REQUIRE f.friend_name IS UNIQUE;
+
+// Prevent duplicate Bosses
+CREATE CONSTRAINT boss_name_unique IF NOT EXISTS
+FOR (b:Boss)
+REQUIRE b.boss_name IS UNIQUE;
+
+// Load Employees and Their Friends - Create (Nodes)
+LOAD CSV WITH HEADERS FROM 'https://drive.google.com/uc?id=1v_Nik1bOgZoNq3yYKx7SakAnk4Xn_POO&confirm=t' AS row
+MERGE (e:Employee {employee_name: row.employee_name})
+MERGE (f:Friend {friend_name: row.is_friends_with});
+
+// Load Employees and Their Bosses - Create (Nodes)
+LOAD CSV WITH HEADERS FROM 'https://drive.google.com/uc?id=1nkxeTxm1bbu8i922nx9MWXlWS2tl54RN&confirm=t' AS row
+MERGE (e:Employee {employee_name: row.employee_name})
+MERGE (b:Boss {boss_name: row.has_boss});
+
+// Create Friends Relationships
+LOAD CSV WITH HEADERS FROM 'https://drive.google.com/uc?id=1v_Nik1bOgZoNq3yYKx7SakAnk4Xn_POO&confirm=t' AS row
+MATCH (e:Employee {employee_name: row.employee_name})
+MATCH (f:Friend {friend_name: row.is_friends_with})
+MERGE (e)-[:FRIENDS_WITH]->(f);
+
+// Create Managed By Bosses Relationship
+LOAD CSV WITH HEADERS FROM 'https://drive.google.com/uc?id=1nkxeTxm1bbu8i922nx9MWXlWS2tl54RN&confirm=t' AS row
+MATCH (e:Employee {employee_name: row.employee_name})
+MATCH (b:Boss {boss_name: row.has_boss})
+MERGE (e)-[:MANAGED_BY]->(b)
