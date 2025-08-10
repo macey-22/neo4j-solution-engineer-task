@@ -1,0 +1,10 @@
+//Show all the people that work on Jacob’s team, but are not friends with Jacob
+MATCH (e:Employee {employee_name: "Jacob"})-[:MANAGED_BY]->(b:Boss)
+MATCH (teammate:Employee)-[:MANAGED_BY]->(b)
+WHERE teammate.employee_name <> "Jacob"
+AND NOT EXISTS {
+  MATCH (e)-[:FRIENDS_WITH]->(f:Friend)
+  WHERE f.friend_name = teammate.employee_name
+}
+RETURN teammate.employee_name AS Team_Members_Not_Friends_With_Jacob
+ORDER BY teammate.employee_name
