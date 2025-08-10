@@ -1,0 +1,23 @@
+//Links to 3 queries leveraging GraphXR for BI insights (Instead of Tableau). GraphXR connects to a Neo4j AuraDB instance
+
+
+//Query 1
+MATCH (e:Employee {employee_name: "Kelly"})-[:FRIENDS_WITH]->(f:Friend),
+      (e)-[:MANAGED_BY]->(b:Boss)
+RETURN e, f, b
+
+//URL to Query 1
+https://graphxr.kineviz.com/share/6893c050fc42cf635b1b9cd9/Solution%20Engineer%20Task/68975d4ab61c62bbe38843e7/Task%20Bonus%20-%20%20Show%20an%20employee%20(Kelly)%20with%20both%20their%20friends%20and%20their%20boss
+
+
+//Query 2
+MATCH (e1:Employee)-[:FRIENDS_WITH]->(f:Friend)<-[:FRIENDS_WITH]-(e2:Employee)
+RETURN e1, f, e2
+//URL to Query 2
+https://graphxr.kineviz.com/share/6893c050fc42cf635b1b9cd9/Solution%20Engineer%20Task/68975e1eb61c62bbe388447c/Task%20Bonus%20-%20Show%20all%20employees%20and%20how%20they%20connect%20via%20shared%20friends
+
+//Query 3
+MATCH (n)-[r]-(m) RETURN * LIMIT 100
+
+//URL to Query 3
+https://graphxr.kineviz.com/share/6893c050fc42cf635b1b9cd9/Solution%20Engineer%20Task/68975e84b61c62bbe38844c6/Task%20Bonus%20-%20Show%20the%20full%20graph
