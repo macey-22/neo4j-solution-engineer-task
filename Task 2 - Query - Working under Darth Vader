@@ -1,0 +1,6 @@
+//Show a hierarchy of all people working under “Darth Vader”.
+MATCH (level1:Employee)-[:MANAGED_BY]->(:Boss {boss_name: 'Darth Vader'})
+MATCH (level2:Employee)-[:MANAGED_BY]->(b:Boss)
+WHERE b.boss_name = level1.employee_name
+RETURN level1.employee_name AS Managed_By_Darth, collect(DISTINCT level2.employee_name) AS Employee
+ORDER BY Managed_By_Darth
