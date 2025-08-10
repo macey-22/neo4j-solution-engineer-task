@@ -1,0 +1,63 @@
+// Prevent duplicate Locations, Create Locations and Create Relationships for 3 records
+CREATE CONSTRAINT location_city_unique IF NOT EXISTS
+FOR (l:Location)
+REQUIRE l.city IS UNIQUE;
+
+CREATE (a:Location {city: "Death Star"})
+CREATE (b:Location {city: "London"})
+CREATE (c:Location {city: "Paris"});
+
+MATCH (b:Boss {boss_name: "Darth Vader"})
+MATCH (l:Location {city: "Death Star"})
+MERGE (b)-[:BASED_IN]->(l);
+
+MATCH (e:Employee {employee_name: "Lexus"})
+MATCH (l:Location {city: "London"})
+MERGE (e)-[:BASED_IN]->(l);
+
+MATCH (e:Employee {employee_name: "Kelly"})
+MATCH (l:Location {city: "Paris"})
+MERGE (e)-[:BASED_IN]->(l);
+
+// Prevent duplicate Departments, Create Deparments and Create Relationships for 3 records
+CREATE CONSTRAINT Deparment_unique IF NOT EXISTS
+FOR (d:Deparment)
+REQUIRE d.department_name IS UNIQUE;
+
+CREATE (a:Department {department_name: "Sith"})
+CREATE (b:Department {department_name: "Accounting"})
+CREATE (c:Department {department_name: "Engineering"});
+
+MATCH (b:Boss {boss_name: "Darth Vader"})
+MATCH (d:Department {department_name: "Sith"})
+MERGE (b)-[:WORKS_IN]->(d);
+
+MATCH (e:Employee {employee_name: "Kelly"})
+MATCH (d:Department {department_name: "Accounting"})
+MERGE (e)-[:WORKS_IN]->(d);
+
+MATCH (e:Employee {employee_name: "Lexus"})
+MATCH (d:Department {department_name: "Engineering"})
+MERGE (e)-[:WORKS_IN]->(d);
+
+
+// Prevent duplicate Projects, Create Projects and Create Relationships for 3 records
+CREATE CONSTRAINT project_unique IF NOT EXISTS
+FOR (p:Projects)
+REQUIRE p.project_name IS UNIQUE;
+
+CREATE (a:Project {project_name: "Dark Side"})
+CREATE (b:Project {project_name: "Budgeting 2026"})
+CREATE (c:Project {project_name: "New LFA"});
+
+MATCH (b:Boss {boss_name: "Darth Vader"})
+MATCH (p:Project {project_name: "Dark Side"})
+MERGE(b)-[:WORKS_ON]->(p);
+
+MATCH (e:Employee {employee_name: "Kelly"})
+MATCH (p:Project {project_name: "Budgeting 2026"})
+MERGE(e)-[:WORKS_ON]->(p);
+
+MATCH (e:Employee {employee_name: "Lexus"})
+MATCH (p:Project {project_name: "New LFA"})
+MERGE(e)-[:WORKS_ON]->(p)
