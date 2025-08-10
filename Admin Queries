@@ -1,0 +1,13 @@
+MATCH (e:Employee) RETURN e LIMIT 25
+MATCH (f:Friend) RETURN f LIMIT 25
+MATCH (b:Boss) RETURN b LIMIT 25
+MATCH (l:location) RETURN l LIMIT 25
+MATCH (d:Department) RETURN d LIMIT 25
+MATCH (p:Project) RETURN p LIMIT 25
+
+MATCH (e:Employee) DETACH DELETE e;
+MATCH (f:Friend) DETACH DELETE f;
+MATCH (b:Boss) DETACH DELETE b;
+MATCH (l:Location) DETACH DELETE l;
+MATCH (d:Department) DETACH DELETE d;
+MATCH (p:Project) DETACH DELETE p
