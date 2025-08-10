@@ -1,0 +1,14 @@
+//Show all employees, their departments, and the projects they work on
+MATCH (e:Employee)-[:WORKS_IN]->(d:Department)
+OPTIONAL MATCH (e)-[:WORKS_ON]->(p:Project)
+RETURN e, d, p
+
+//Show all employees working on a project called "New LFA"
+MATCH (e:Employee)-[:WORKS_ON]->(p:Project {project_name: "New LFA"})
+OPTIONAL MATCH (e)-[:BASED_IN]->(l:Location)
+RETURN e, p, l
+
+//Show bosses that are located on the "Death Star" and working on a dark project 
+MATCH (b:Boss)-[:BASED_IN]->(l:Location {city: "Death Star"})
+MATCH (b)-[:WORKS_ON]->(p:Project {project_name: "Dark Side"})
+RETURN b, l, p
